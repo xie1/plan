@@ -1,0 +1,406 @@
+1、流的概念
+
+程序中的输入输出都是以流的形式保存的，流中保存的实际上全都是字节文件。
+2、字节流与字符流
+
+内容操作就四个类：OutputStream、InputStream、Writer、Reader
+
+3、字节流
+
+3.1字节输出流OutputStream
+
+Clonseable表示可以关闭的操作，因为程序运行到最后肯定要关闭。
+Fluashable表示刷新，清空内存中的数据
+
+import java.io.File ;
+import java.io.OutputStream ;
+import java.io.FileOutputStream ;
+public class OutputStreamDemo01{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		OutputStream out = null ;	// 准备好一个输出的对象
+		out = new FileOutputStream(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行写操作
+		String str = "Hello World!!!" ;		// 准备一个字符串
+		byte b[] = str.getBytes() ;			// 只能输出byte数组，所以将字符串变为byte数组
+		out.write(b) ;						// 将内容输出，保存文件
+		// 第4步、关闭输出流
+		out.close() ;						// 关闭输出流
+	}
+};
+在操作的时候，如果文件本身不存在，则会为用户自动创建新文件。
+在操作输出流的时候，也可以使用write(int i)的方法写出数据。
+import java.io.File ;
+import java.io.OutputStream ;
+import java.io.FileOutputStream ;
+public class OutputStreamDemo02{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		OutputStream out = null ;	// 准备好一个输出的对象
+		out = new FileOutputStream(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行写操作
+		String str = "Hello World!!!" ;		// 准备一个字符串
+		byte b[] = str.getBytes() ;			// 只能输出byte数组，所以将字符串变为byte数组
+		for(int i=0;i<b.length;i++){		// 采用循环方式写入
+			out.write(b[i]) ;	// 每次只写入一个内容
+		}
+		// 第4步、关闭输出流
+		out.close() ;						// 关闭输出流
+	}
+};
+
+以上的操作中在写入数据之后，文件之前的内容应经不存在了，因为在io操作中默认的情况是将其进行覆盖的，那么如果现在要想执行追加的功能，则必须设置追加的操作。
+
+import java.io.File ;
+import java.io.OutputStream ;
+import java.io.FileOutputStream ;
+public class OutputStreamDemo03{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		OutputStream out = null ;	// 准备好一个输出的对象
+		out = new FileOutputStream(f,true)  ;	// 此处表示在文件末尾追加内容
+		// 第3步、进行写操作
+		String str = "Hello World!!!" ;		// 准备一个字符串
+		byte b[] = str.getBytes() ;			// 只能输出byte数组，所以将字符串变为byte数组
+		for(int i=0;i<b.length;i++){		// 采用循环方式写入
+			out.write(b[i]) ;	// 每次只写入一个内容
+		}
+		// 第4步、关闭输出流
+		out.close() ;						// 关闭输出流
+	}
+};
+程序本身是可以追加内容了，但是没有换行，是直接追加到末尾的。
+如果在文件中想换行的话，使用“\r\n”完成。
+import java.io.File ;
+import java.io.OutputStream ;
+import java.io.FileOutputStream ;
+public class OutputStreamDemo04{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		OutputStream out = null ;	// 准备好一个输出的对象
+		out = new FileOutputStream(f,true)  ;	// 此处表示在文件末尾追加内容
+		// 第3步、进行写操作
+		String str = "\r\nHello World!!!" ;		// 准备一个字符串
+		byte b[] = str.getBytes() ;			// 只能输出byte数组，所以将字符串变为byte数组
+		for(int i=0;i<b.length;i++){		// 采用循环方式写入
+			out.write(b[i]) ;	// 每次只写入一个内容
+		}
+		// 第4步、关闭输出流
+		out.close() ;						// 关闭输出流
+	}
+};
+
+3.2字节输入流InputStream
+
+
+import java.io.File ;
+import java.io.InputStream ;
+import java.io.FileInputStream ;
+public class InputStreamDemo01{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		InputStream input = null ;	// 准备好一个输入的对象
+		input = new FileInputStream(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行读操作
+		byte b[] = new byte[1024] ;		// 所有的内容都读到此数组之中
+		input.read(b) ;		// 读取内容
+		// 第4步、关闭输出流
+		input.close() ;						// 关闭输出流
+		System.out.println("内容为：" + new String(b)) ;	// 把byte数组变为字符串输出
+	}
+};
+功能虽然实现了，但是存在问题？ 数据的长度、数组的空间。
+import java.io.File ;
+import java.io.InputStream ;
+import java.io.FileInputStream ;
+public class InputStreamDemo02{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		InputStream input = null ;	// 准备好一个输入的对象
+		input = new FileInputStream(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行读操作
+		byte b[] = new byte[1024] ;		// 所有的内容都读到此数组之中
+		int len = input.read(b) ;		// 读取内容
+		// 第4步、关闭输出流
+		input.close() ;						// 关闭输出流\
+		System.out.println("读入数据的长度：" + len) ;
+		System.out.println("内容为：" + new String(b,0,len)) ;	// 把byte数组变为字符串输出
+	}
+};
+
+
+import java.io.File ;
+import java.io.InputStream ;
+import java.io.FileInputStream ;
+public class InputStreamDemo03{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		InputStream input = null ;	// 准备好一个输入的对象
+		input = new FileInputStream(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行读操作
+		byte b[] = new byte[(int)f.length()] ;		// 数组大小由文件决定
+		int len = input.read(b) ;		// 读取内容
+		// 第4步、关闭输出流
+		input.close() ;						// 关闭输出流\
+		System.out.println("读入数据的长度：" + len) ;
+		System.out.println("内容为：" + new String(b)) ;	// 把byte数组变为字符串输出
+	}
+};
+
+import java.io.File ;
+import java.io.InputStream ;
+import java.io.FileInputStream ;
+public class InputStreamDemo04{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		InputStream input = null ;	// 准备好一个输入的对象
+		input = new FileInputStream(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行读操作
+		byte b[] = new byte[(int)f.length()] ;		// 数组大小由文件决定
+		for(int i=0;i<b.length;i++){
+			b[i] = (byte)input.read() ;		// 读取内容
+		}
+		// 第4步、关闭输出流
+		input.close() ;						// 关闭输出流\
+		System.out.println("内容为：" + new String(b)) ;	// 把byte数组变为字符串输出
+	}
+};
+以上的操作只适合于知道输入流的大小，如果现在不知道输入流大小。
+import java.io.File ;
+import java.io.InputStream ;
+import java.io.FileInputStream ;
+public class InputStreamDemo05{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		InputStream input = null ;	// 准备好一个输入的对象
+		input = new FileInputStream(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行读操作
+		byte b[] = new byte[1024] ;		// 数组大小由文件决定
+		int len = 0 ; 
+		int temp = 0 ;			// 接收每一个读取进来的数据
+		while((temp=input.read())!=-1){
+			// 表示还有内容，文件没有读完
+			b[len] = (byte)temp ;
+			len++ ;
+		}
+		// 第4步、关闭输出流
+		input.close() ;						// 关闭输出流\
+		System.out.println("内容为：" + new String(b,0,len)) ;	// 把byte数组变为字符串输出
+	}
+};
+当不知道读取内容多大的时候，可以使用读取内容返回值为-1 为读完的标志。
+4、字符流
+
+4.1字符输出流Writer
+
+
+字符流的操作比字节流操作好在一点，就是可以直接输出字符串了。不用再进行转换操作了。
+import java.io.File ;
+import java.io.Writer ;
+import java.io.FileWriter ;
+public class WriterDemo01{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		Writer out = null ;	// 准备好一个输出的对象
+		out = new FileWriter(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行写操作
+		String str = "Hello World!!!" ;		// 准备一个字符串
+		out.write(str) ;						// 将内容输出，保存文件
+		// 第4步、关闭输出流
+		out.close() ;						// 关闭输出流
+	}
+};
+使用字符流默认情况下依然是覆盖已有的文件，如果想要追加的话，则直接在FileWriter上增加一个可追加的标记即可。
+import java.io.File ;
+import java.io.Writer ;
+import java.io.FileWriter ;
+public class WriterDemo02{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		Writer out = null ;	// 准备好一个输出的对象
+		out = new FileWriter(f,true)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行写操作
+		String str = "\r\nLIXINGHUA\r\nHello World!!!" ;		// 准备一个字符串
+		out.write(str) ;						// 将内容输出，保存文件
+		// 第4步、关闭输出流
+		out.close() ;						// 关闭输出流
+	}
+};
+
+4.2字符输入流Reader
+
+
+以字符数组的形式读取数据：
+import java.io.File ;
+import java.io.Reader ;
+import java.io.FileReader ;
+public class ReaderDemo01{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		Reader input = null ;	// 准备好一个输入的对象
+		input = new FileReader(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行读操作
+		char c[] = new char[1024] ;		// 所有的内容都读到此数组之中
+		int len = input.read(c) ;		// 读取内容
+		// 第4步、关闭输出流
+		input.close() ;						// 关闭输出流
+		System.out.println("内容为：" + new String(c,0,len)) ;	// 把字符数组变为字符串输出
+	}
+};
+采用循环的方式，通过文件是否读到低的形式读取：
+import java.io.File ;
+import java.io.Reader ;
+import java.io.FileReader ;
+public class ReaderDemo02{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		Reader input = null ;	// 准备好一个输入的对象
+		input = new FileReader(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行读操作
+		char c[] = new char[1024] ;		// 所有的内容都读到此数组之中
+		int temp = 0 ;	// 接收每一个内容
+		int len = 0 ;		// 读取内容
+		while((temp=input.read())!=-1){
+			// 如果不是-1就表示还有内容，可以继续读取
+			c[len] = (char)temp ;
+			len++ ;
+		}
+		// 第4步、关闭输出流
+		input.close() ;						// 关闭输出流
+		System.out.println("内容为：" + new String(c,0,len)) ;	// 把字符数组变为字符串输出
+	}
+};
+5、字节流与字符流的区别
+
+验证字符流使用了缓存：
+import java.io.File ;
+import java.io.OutputStream ;
+import java.io.FileOutputStream ;
+public class OutputStreamDemo05{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		OutputStream out = null ;	// 准备好一个输出的对象
+		out = new FileOutputStream(f)  ;	// 实例化
+		// 第3步、进行写操作
+		String str = "Hello World!!!" ;		// 准备一个字符串
+		byte b[] = str.getBytes() ;			// 只能输出byte数组，所以将字符串变为byte数组
+		out.write(b) ;		// 写入数据
+		// 第4步、关闭输出流
+		// out.close() ;						// 关闭输出流
+	}
+};
+在使用字节流操作中，及时没有关闭，最终也是可以输出的。
+import java.io.File ;
+import java.io.Writer ;
+import java.io.FileWriter ;
+public class WriterDemo03{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		Writer out = null ;	// 准备好一个输出的对象
+		out = new FileWriter(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行写操作
+		String str = "Hello World!!!" ;		// 准备一个字符串
+		out.write(str) ;						// 将内容输出，保存文件
+		// 第4步、关闭输出流
+		// out.close() ;						// 此时，没有关闭
+	}
+};
+
+import java.io.File ;
+import java.io.Writer ;
+import java.io.FileWriter ;
+public class WriterDemo04{
+	public static void main(String args[]) throws Exception{	// 异常抛出，不处理
+		// 第1步、使用File类找到一个文件
+		File f= new File("d:" + File.separator + "test.txt") ;	// 声明File对象
+		// 第2步、通过子类实例化父类对象
+		Writer out = null ;	// 准备好一个输出的对象
+		out = new FileWriter(f)  ;	// 通过对象多态性，进行实例化
+		// 第3步、进行写操作
+		String str = "Hello World!!!" ;		// 准备一个字符串
+		out.write(str) ;						// 将内容输出，保存文件
+		// 第4步、关闭输出流
+		out.flush() ;	// 强制性清空缓冲区中的内容
+		// out.close() ;						// 此时，没有关闭
+	}
+};
+
+6、操作范例
+
+
+import java.io.* ;
+public class Copy{
+	public static void main(String args[]){
+		if(args.length!=2){		// 判断是否是两个参数
+			System.out.println("输入的参数不正确。") ;
+			System.out.println("例：java Copy 源文件路径 目标文件路径") ;
+			System.exit(1) ;	// 系统退出
+		}
+		File f1 = new File(args[0]) ;	// 源文件的File对象
+		File f2 = new File(args[1]) ;	// 目标文件的File对象
+		if(!f1.exists()){
+			System.out.println("源文件不存在！") ;
+			System.exit(1) ;
+		}
+		InputStream input = null ;		// 准备好输入流对象，读取源文件
+		OutputStream out = null ;		// 准备好输出流对象，写入目标文件
+		try{
+			input = new FileInputStream(f1) ;
+		}catch(FileNotFoundException e){
+			e.printStackTrace() ;
+		}
+		try{
+			out = new FileOutputStream(f2) ;
+		}catch(FileNotFoundException e){
+			e.printStackTrace() ;
+		}
+		if(input!=null && out!=null){	// 判断输入或输出是否准备好
+			int temp = 0 ;	
+			try{
+				while((temp=input.read())!=-1){	// 开始拷贝
+					out.write(temp) ;	// 边读边写
+				}
+				System.out.println("拷贝完成！") ;
+			}catch(IOException e){
+				e.printStackTrace() ;
+				System.out.println("拷贝失败！") ;
+			}
+			try{
+				input.close() ;		// 关闭
+				out.close() ;		// 关闭
+			}catch(IOException e){
+				e.printStackTrace() ;
+			}
+		}
+	}	
+}
