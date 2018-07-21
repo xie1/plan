@@ -53,7 +53,7 @@
 #####2、Java修饰符
 
 	1、访问修饰符：default, public , protected, private
-	2、非访问修饰符：final, abstract, strictfp
+	2、非访问修饰符：final, abstract
 
 
 ##### 3、Java变量
@@ -93,7 +93,56 @@
 #####4、Java枚举值
 
 #####5、Java关键字（java保留关键字）
-
+		abstract
+		assert
+		boolean
+		break
+		byte
+		case
+		catch
+		char
+		class
+		const
+		continue
+		default
+		do
+		double
+		else
+		enum
+		extends
+		final
+		finally
+		float
+		for
+		goto
+		if
+		implements
+		import
+		instanceof
+		int
+		interface
+		long
+		native
+		new
+		package
+		private
+		protected
+		public
+		return
+		short
+		static
+		strictfp
+		super
+		switch
+		synchronized
+		this
+		throw
+		throws
+		transient
+		try
+		void
+		volatile
+		while
 ####2、基本数据类型
 
 ##### 1、8种原始数据类型
@@ -196,8 +245,6 @@
 
 ##### 2、循环控制
 
-
-	
 	while 循环
 	
 	do...while 循环
@@ -220,15 +267,24 @@
 ##### 3、StringBuilder
 
 #### 6、数组
-
+		
 #####1、声明数组变量 ：dataType[] arrayRefVar
-
+	1、两种方式声明数组：
+		创建一个具有一定大小的数组，这个大小在数组的整个生存期中是固定的。
+		创建一个具有一组初始值的数组。这个集合的大小决定了数组的大小 —它的大小恰好够容纳所有这些值，而且它的大小在数组的整个生存期中是固定的。
 ##### 2、创建数组：arrayRefVar = new dataType[arraySize];
 
 
 
+
 ####7、问题收集：
-	1、String、StringBuffer、StringBuilder区别
+	1、javac及java命令的原理？
+	2、了解JRE,JVM,JDK的区别？
+	3、什么是实例变量？为什么每个对象都有独特的实例变量?对象的实例变量决定对象的状态？对象的状态又有多少种？
+	4、理解对象的实例化过程，例如存在父子关系下的实例过程？
+	5、创建对象有几种方式?
+	6、静态变量和实例变量的加载顺序是什么？
+	7、数组的数据结构，集合中那些扩展了结合的数据结构？
 	 
 
 
